@@ -9,6 +9,9 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 from langchain_groq import ChatGroq
 
+from langchain_anthropic import ChatAnthropic
+from langchain_openai import ChatOpenAI
+
 load_dotenv()
 
 
@@ -123,19 +126,35 @@ def ai_move(data: ai_move_type):
             print("Turn: ", "White" if data.turn else "Black")
 
             print("Using model:", data.model)
-            llm = ChatGroq(
-                api_key=os.getenv("GROQ_API_KEY"),
-                model=data.model,
-                temperature=1,
-                max_tokens=None,
-                # reasoning_format="parsed",
-                timeout=None,
-                max_retries=2,
-            )
+
+            if data.model == "OPENAI":
+                llm = ChatOpenAI(
+                    model="gpt-4o-mini",
+                    api_key=os.getenv("OPENAI_API_KEY"),
+                    temperature=1,
+                    max_tokens=30,
+                    # reasoning_effort="high",
+                )
+
+            elif data.model == "CLAUDE":
+                llm = ChatAnthropic(
+                    model="claude-haiku-4-5-20251001",
+                    temperature=1,
+                    max_tokens=30,
+                    api_key=os.getenv("CLAUDE_API_KEY"),
+                )
+            else:
+                llm = ChatGroq(
+                    api_key=os.getenv("GROQ_API_KEY"),
+                    model=data.model,
+                    temperature=1,
+                    max_tokens=30,
+                    # reasoning_format="parsed",
+                    timeout=None,
+                    max_retries=2,
+                )
+
             response = llm.invoke(prompt)
-
-            print("response", response.content)
-
             move = response.content
             print("AI Selected Move", move)
             board.push_uci(move)
@@ -184,7 +203,7 @@ def get_chess_prompt(ai_move_data):
     move_stack = board.move_stack
     last_move = move_stack[-1] if len(move_stack) > 0 else None
 
-    print("MOVE_STACK", move_stack)
+    # print("MOVE_STACK", move_stack)
     print("LAST MOVE", last_move)
 
     # - Move Stack (History): {move_stack}
