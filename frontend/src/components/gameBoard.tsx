@@ -22,7 +22,7 @@ function GameBoard() {
     async function onDrop(drop: PieceDropHandlerArgs) {
         console.log('drop', drop);
 
-        const res = await fetch(`${API}/move`, {
+        const res = await fetch(`${API}/ai_move`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,9 +45,37 @@ function GameBoard() {
         return true;
     }
 
+    // async function onAIMove(drop: PieceDropHandlerArgs) {
+    //     console.log('drop', drop);
+
+    //     const res = await fetch(`${API}/ai_move`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //             piece: drop.piece,
+    //             sourceSquare: drop.sourceSquare,
+    //             targetSquare: drop.targetSquare,
+    //         }),
+    //     });
+
+    //     const data = await res.json();
+
+    //     if (!data.success) return false;
+
+    //     console.log(data);
+
+    //     setFen(data.fen);
+    //     setStatus(data);
+    //     return true;
+    // }
+
+
     const chessBoardOptions = {
         position: fen, // we'll be getting this from the backend.
         onPieceDrop: onDrop,
+        // onAIClick: onAIMove,
     };
 
     return (
