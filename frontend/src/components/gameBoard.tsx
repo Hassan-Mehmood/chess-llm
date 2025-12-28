@@ -194,7 +194,7 @@ function AIvsAIChess() {
                 onStartGame={handleStartGame}
             />
             <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-4">
-                <div className="max-w-6xl w-full">
+                <div className="w-7xl">
                     <h1 className="text-4xl font-bold text-center mb-8 text-white">
                         🤖 AI vs AI Chess Battle
                     </h1>

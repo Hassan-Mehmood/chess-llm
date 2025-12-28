@@ -7,7 +7,7 @@ function App() {
     const [gameStart, setGameStart] = useState(false);
 
     return (
-        <main>
+        <main className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-screen">
             {gameStart === false ? (
                 <div className="flex justify-center items-center h-screen">
                     <Button
